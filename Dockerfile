@@ -1,4 +1,4 @@
-FROM alpine:3.18.4
+FROM golang:1.20.10-alpine3.18
 
 ARG BUILD_CONTEXT="build-context"
 ARG UID=worker
@@ -16,10 +16,17 @@ WORKDIR /
 RUN addgroup -S ${GID} && adduser -S ${UID} -G ${GID}
 
 RUN apk add --no-cache \
+    build-base make \
     bash curl \
     py3-pip \
+	git \
     libreoffice \
     supervisor
+	
+ENV GO111MODULE=on \
+	CGO_ENABLED=1 \
+	GOOS=linux \
+	GOARCH=amd64
 
 # fonts - https://wiki.alpinelinux.org/wiki/Fonts
 RUN apk add --no-cache \
