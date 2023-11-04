@@ -1,4 +1,4 @@
-FROM golang:1.20.10-alpine3.18
+FROM --platform=linux/amd64 golang:1.21.3-alpine3.18
 
 ARG BUILD_CONTEXT="build-context"
 ARG UID=worker
@@ -14,6 +14,8 @@ LABEL org.opencontainers.image.url="https://github.com/unoconv/unoserver-docker"
 WORKDIR /
 
 RUN addgroup -S ${GID} && adduser -S ${UID} -G ${GID}
+
+RUN apk update
 
 RUN apk add --no-cache \
     build-base make \
@@ -47,12 +49,12 @@ RUN rm $(which wget) && \
     rm -rf /var/cache/apk/* /tmp/*
 
 # renovate: datasource=repology depName=temurin-17-jdk versioning=loose
-ARG VERSION_ADOPTIUM_TEMURIN="17.0.7_p7-r0"
+ARG VERSION_ADOPTIUM_TEMURIN="21.0.0_p35-r0"
 
 # install Eclipse Temurin JDK
 RUN curl https://packages.adoptium.net/artifactory/api/security/keypair/public/repositories/apk -o /etc/apk/keys/adoptium.rsa.pub && \
     echo 'https://packages.adoptium.net/artifactory/apk/alpine/main' >> /etc/apk/repositories && \
-    apk update && apk add temurin-17-jdk=${VERSION_ADOPTIUM_TEMURIN}
+    apk update && apk add temurin-21-jdk=${VERSION_ADOPTIUM_TEMURIN}
 
 # https://github.com/unoconv/unoserver/
 RUN pip install -U unoserver
