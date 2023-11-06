@@ -7,11 +7,11 @@ SUPERVISOR_PARAMS='-c /etc/supervisord.conf'
 export PS1='\u@\h:\w\$ '
 
 # if tty then assume that container is interactive
-if [ ! -t 0 ]; then
-  echo "Running image in detached mode is probably not meaningful."
-  echo "Use interactive mode (-it), e.g. 'docker run -v /tmp:/data -it unoserver/unoserver-docker'."
-  exit 1
-fi
+#if [ ! -t 0 ]; then
+#  echo "Running image in detached mode is probably not meaningful."
+#  echo "Use interactive mode (-it), e.g. 'docker run -v /tmp:/data -it unoserver/unoserver-docker'."
+#  exit 1
+#fi
 
 export UNIX_HTTP_SERVER_PASSWORD=${UNIX_HTTP_SERVER_PASSWORD:-`cat /proc/sys/kernel/random/uuid`}
 
